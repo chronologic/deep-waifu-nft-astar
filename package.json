@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "npx hardhat compile",
     "deploy:localnet": "npx hardhat run --network localnet scripts/deploy.ts",
-    "test": "npx hardhat test"
+    "test": "npx hardhat compile && npx hardhat test"
   },
   "keywords": [],
   "author": "",
@@ -42,5 +42,8 @@
     "ts-node": "^10.3.0",
     "typechain": "^5.2.0",
     "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.3.2"
   }
 }

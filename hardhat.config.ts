@@ -22,13 +22,18 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
 
+const throwawayAccount =
+  "0x27baacb0093183da1f5e64a083a1a934bed7464163a31448a5936bc61786d2fd";
+
 const config: HardhatUserConfig = {
   solidity: "0.8.4",
   networks: {
     localnet: {
       url: "http://localhost:9933",
       accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+        process.env.PRIVATE_KEY !== undefined
+          ? [process.env.PRIVATE_KEY, throwawayAccount]
+          : [throwawayAccount],
       chainId: 4369,
     },
   },
