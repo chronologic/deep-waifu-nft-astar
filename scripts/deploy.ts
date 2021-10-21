@@ -4,6 +4,9 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 import { ethers } from "hardhat";
+import makePrompt from "prompt-sync";
+
+const prompt = makePrompt();
 
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
@@ -13,13 +16,42 @@ async function main() {
   // manually to make sure everything is compiled
   // await hre.run('compile');
 
-  // We get the contract to deploy
-  const Greeter = await ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
+  const [signer] = await ethers.getSigners();
+  const signerAddress = await signer.getAddress();
 
-  await greeter.deployed();
+  const mintPrice = 123456;
+  const beneficiary = signerAddress;
+  const maxItems = 1000;
 
-  console.log("Greeter deployed to:", greeter.address);
+  const network = await ethers.provider.getNetwork();
+
+  console.log("network:", network.name, network.chainId);
+  console.log("signer:", signerAddress);
+  console.log("beneficiary:", beneficiary);
+  console.log("mint price:", ethers.utils.formatEther(mintPrice));
+  console.log("max items:", maxItems);
+
+  const userInput = prompt("Does the above look good? (Y/n): ", "Y");
+
+  if (userInput !== "Y") {
+    console.log("Stopping");
+    return;
+  }
+
+  const balanceBefore = await ethers.provider.getBalance(signerAddress);
+
+  const DeepWaifu = await ethers.getContractFactory("DeepWaifu");
+  const deepWaifu = await DeepWaifu.deploy(mintPrice, beneficiary, maxItems);
+
+  await deepWaifu.deployed();
+
+  const balanceAfter = await ethers.provider.getBalance(signerAddress);
+
+  console.log("DeepWaifu deployed to:", deepWaifu.address);
+  console.log(
+    "Deployment cost:",
+    ethers.utils.formatEther(balanceBefore.sub(balanceAfter))
+  );
 }
 
 // We recommend this pattern to be able to use async/await everywhere
