@@ -235,6 +235,34 @@ describe("DeepWaifu", async () => {
     expect(errorMsg).to.include("Sold out!");
   });
 
+  it("does not allow minting with the same id", async () => {
+    const { deepWaifu } = await deployContract();
+
+    // eslint-disable-next-line no-unused-vars
+    const [_, other] = await ethers.getSigners();
+    const clientAddress = await other.getAddress();
+
+    const mintTx = await deepWaifu.mintNFT(clientAddress, 1, "sdfsdf");
+
+    await mintTx.wait();
+
+    // try to mint duplicate
+    let errorMsg = "";
+    try {
+      const mintDuplicateTx = await deepWaifu.mintNFT(
+        clientAddress,
+        1,
+        "fdskl"
+      );
+
+      await mintDuplicateTx.wait();
+    } catch (e) {
+      errorMsg = (e as any).message;
+    }
+
+    expect(errorMsg).to.include("ERC721: token already minted");
+  });
+
   async function deployContract({
     beneficiary = defaultBeneficiary,
     mintPrice = 123456,
