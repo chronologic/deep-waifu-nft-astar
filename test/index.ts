@@ -140,7 +140,7 @@ describe("DeepWaifu", async () => {
     });
   });
 
-  it("does not allow minting when all items are sold out", async () => {
+  it("does not allow paying for mint when all items are sold out", async () => {
     const maxItems = 3;
 
     const { deepWaifu, mintPrice } = await deployContract({ maxItems });
@@ -164,6 +164,70 @@ describe("DeepWaifu", async () => {
       });
 
       await soldOutTx.wait();
+    } catch (e) {
+      errorMsg = (e as any).message;
+    }
+
+    expect(errorMsg).to.include("Sold out!");
+  });
+
+  it("mints", async () => {
+    const { deepWaifu } = await deployContract();
+
+    // eslint-disable-next-line no-unused-vars
+    const [_, other] = await ethers.getSigners();
+    const clientAddress = await other.getAddress();
+
+    const mintTx = await deepWaifu.mintNFT(clientAddress, 1, "sdfsdf");
+
+    await mintTx.wait();
+  });
+
+  it("does not allow non owner to mint", async () => {
+    const { deepWaifu } = await deployContract();
+
+    // eslint-disable-next-line no-unused-vars
+    const [_, other] = await ethers.getSigners();
+    const signerAddress = await other.getAddress();
+
+    let errorMsg = "";
+    try {
+      const mintTx = await deepWaifu
+        .connect(other)
+        .mintNFT(signerAddress, 1, "sdfsdf");
+
+      await mintTx.wait();
+    } catch (e) {
+      errorMsg = (e as any).message;
+    }
+
+    expect(errorMsg).to.include("Ownable: caller is not the owner");
+  });
+
+  it("does not allow minting when sold out", async () => {
+    const maxItems = 3;
+
+    const { deepWaifu, mintPrice } = await deployContract({ maxItems });
+
+    // eslint-disable-next-line no-unused-vars
+    const [_, other] = await ethers.getSigners();
+
+    // buy up all items
+    for (let i = 0; i < maxItems; i++) {
+      const payForMintTx = await deepWaifu.connect(other).payForMint({
+        value: mintPrice,
+      });
+      await payForMintTx.wait();
+    }
+
+    const signerAddress = await other.getAddress();
+
+    // try to mint now
+    let errorMsg = "";
+    try {
+      const mintTx = await deepWaifu.mintNFT(signerAddress, 1, "sdfsdf");
+
+      await mintTx.wait();
     } catch (e) {
       errorMsg = (e as any).message;
     }
