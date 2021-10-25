@@ -34,7 +34,7 @@ contract DeepWaifu is ERC721URIStorage, Ownable {
     mintPrice = _mintPrice;
   }
 
-  function payForMint() public payable {
+  function payForMint() public payable returns (uint16) {
     require(_tokenIds.current() < maxItems, "Sold out!");
 
     _tokenIds.increment();
@@ -42,19 +42,21 @@ contract DeepWaifu is ERC721URIStorage, Ownable {
     beneficiary.transfer(mintPrice);
 
     emit PaidForMint(msg.sender, mintPrice, uint16(_tokenIds.current()));
+
+    return uint16(_tokenIds.current());
   }
 
   function mintNFT(
     address recipient,
     uint16 id,
     string memory tokenURI
-  ) public onlyOwner returns (uint256) {
+  ) public onlyOwner returns (uint16) {
     require(_tokenIds.current() < maxItems, "Sold out!");
 
     _mint(recipient, id);
     _setTokenURI(id, tokenURI);
 
-    return id;
+    return uint16(id);
   }
 
   function currentId() public view returns (uint256) {
