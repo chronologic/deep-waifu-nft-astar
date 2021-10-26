@@ -7,6 +7,8 @@
     "compile": "npx hardhat compile",
     "deploy:localnet": "npx hardhat run --network localnet scripts/deploy.ts",
     "update:localnet": "npx hardhat run --network localnet scripts/update.ts",
+    "deploy:shibuya": "npx hardhat run --network shibuya scripts/deploy.ts",
+    "deploy:shiden": "npx hardhat run --network shiden scripts/deploy.ts",
     "test": "npx hardhat compile && npx hardhat test"
   },
   "keywords": [],

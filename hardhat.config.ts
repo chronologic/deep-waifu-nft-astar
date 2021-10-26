@@ -25,16 +25,28 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 const throwawayAccount =
   "0x27baacb0093183da1f5e64a083a1a934bed7464163a31448a5936bc61786d2fd";
 
+const accounts =
+  process.env.PRIVATE_KEY !== undefined
+    ? [process.env.PRIVATE_KEY, throwawayAccount]
+    : [throwawayAccount];
+
 const config: HardhatUserConfig = {
   solidity: "0.8.4",
   networks: {
     localnet: {
       url: "http://localhost:9933",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined
-          ? [process.env.PRIVATE_KEY, throwawayAccount]
-          : [throwawayAccount],
+      accounts,
       chainId: 4369,
+    },
+    shibuya: {
+      url: "https://rpc.shibuya.astar.network:8545",
+      accounts,
+      chainId: 81,
+    },
+    shiden: {
+      url: "https://rpc.shiden.astar.network:8545",
+      accounts,
+      chainId: 336,
     },
   },
   gasReporter: {

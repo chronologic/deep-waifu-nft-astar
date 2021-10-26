@@ -19,7 +19,8 @@ async function main() {
   const [signer] = await ethers.getSigners();
   const signerAddress = await signer.getAddress();
 
-  const mintPrice = ethers.utils.parseEther("30");
+  // const mintPrice = ethers.utils.parseEther("30");
+  const mintPrice = ethers.utils.parseEther("0.1");
   const beneficiary = signerAddress;
   const maxItems = 1000;
 
