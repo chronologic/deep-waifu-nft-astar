@@ -1,46 +1,52 @@
-# Advanced Sample Hardhat Project
+![DeepWaifu Main](public/Header.jpg)
 
-This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
+# deep-waifu-nft-astar
 
-The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
+This is a part of the [DeepWaifu](https://blog.chronologic.network/no-waifu-no-laifu-we-use-deep-networks-to-draw-your-anime-style-portrait-5fbb0ee6b16a) project.
 
-Try running some of the following tasks:
+This repository holds the smart contract that handles payments and minting of the DeepWaifu NFTs.
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-npx hardhat help
-REPORT_GAS=true npx hardhat test
-npx hardhat coverage
-npx hardhat run scripts/deploy.ts
-TS_NODE_FILES=true npx ts-node scripts/deploy.ts
-npx eslint '**/*.{js,ts}'
-npx eslint '**/*.{js,ts}' --fix
-npx prettier '**/*.{json,sol,md}' --check
-npx prettier '**/*.{json,sol,md}' --write
-npx solhint 'contracts/**/*.sol'
-npx solhint 'contracts/**/*.sol' --fix
-```
+The live version of the dapp can be found [here](https://deepwaifu.ai/).
 
-# Etherscan verification
+## 🗺 Project overview
 
-To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
+This project consists of the following repositories:
 
-In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
+- https://github.com/chronologic/deep-waifu-ui-astar
+- https://github.com/chronologic/deep-waifu-server-astar
+- https://github.com/chronologic/deep-waifu-nft-astar (this repository)
+- https://github.com/chronologic/deep-waifu-model
 
-```shell
-hardhat run --network ropsten scripts/sample-script.ts
-```
+## 👀 Demo video
 
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
+[![Demo Video](public/DemoVideo.jpg)](https://youtu.be/hTFxlKN7sFw)
 
-```shell
-npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
-```
+## 🔧 Environment variables
 
-# Performance optimizations
+This repo uses [`dotenv`](https://www.npmjs.com/package/dotenv) to load environment variables.
 
-For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).
+For development, an `.env` file should be created based on the `.env.example` template file. The `.env` file should never be commited.
+
+In production, environment variables can be injected directly.
+
+Below is a list of possible environment variables.
+
+| Name          | Type     | Description                                                  |
+| ------------- | -------- | ------------------------------------------------------------ |
+| `PRIVATE_KEY` | `string` | Private key for the wallet that will be used for deployment. |
+
+## 💽 Installation
+
+Run `npm install`
+
+## 🚧 Building
+
+Run `npm run compile`
+
+## 📊 Testing
+
+Run `npm run test`
+
+## 🔗 Deployment
+
+Run `npm run deploy:<chain>` where chain can be `localnet`, `shibuya` or `shiden`.
