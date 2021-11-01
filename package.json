@@ -9,6 +9,7 @@
     "update:localnet": "npx hardhat run --network localnet scripts/update.ts",
     "deploy:shibuya": "npx hardhat run --network shibuya scripts/deploy.ts",
     "deploy:shiden": "npx hardhat run --network shiden scripts/deploy.ts",
+    "fetch:shiden": "npx hardhat run --network shiden scripts/fetch.ts",
     "test": "npx hardhat compile && npx hardhat test"
   },
   "keywords": [],
